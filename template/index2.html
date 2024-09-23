@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/style.css">
+    <title>Goupie-Tracker</title>
+</head>
+
+<body id="backgraound">
+    <div class="bk">
+        <h1 class="hr">{{.Art.Name}}</h1>
+        <div class="bord">
+
+            <div class="bord2">
+                <center>
+                    <img src="{{.Art.Image}}" alt="artist" class="ar">
+                </center>
+            </div>
+
+            <div class="mem">
+                <details>
+                    <summary class="members">members</summary>
+                    <ul>
+                        {{range .Art.Members}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </details>
+
+                <details>
+                    <summary class="members">creationDates</summary>
+                    <ul>
+
+                        <li>{{.Art.CreationDate}}</li>
+
+                    </ul>
+
+                </details>
+
+                <details>
+                    <summary class="members">firstAlbum</summary>
+                    <ul>
+                        <li>{{.Art.FirstAlbum}}</li>
+                    </ul>
+                </details>
+
+                <details>
+                    <summary class="members">locations</summary>
+                    <ul>
+                        {{range .Loca.Locations}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </details>
+
+                <details>
+                    <summary class="members">concertDates</summary>
+                    <ul>
+                        {{range .Conc.Dates}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </details>
+
+                <details>
+                    <summary class="members">relations</summary>
+                    <ul>
+                        {{range $Key, $Values := .Rela.Relation}}
+                        <li>{{$Key}}
+                            <ul>
+                                {{range $Values}}
+                                <li>{{.}}</li>
+                                {{end}}
+                            </ul>
+                        </li>
+                        {{end}}
+                    </ul>
+                </details>
+
+            </div>
+        </div>
+    </div>
+    <div class="Back">
+        <a href="\" class="a">Back</a>
+    </div>
+</body>
+
+</html>
