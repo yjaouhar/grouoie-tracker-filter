@@ -10,11 +10,9 @@ import (
 func ExecuteTemplate(temp *template.Template, s string, w http.ResponseWriter, info interface{}, status int) {
 	var buf bytes.Buffer // Buffer to hold the rendered template content temporarily
 	var err error
-	if s == "alo" {
-		// Result = Result{
-		// 	mp
-		// }
-		
+
+	// Handle different template display cases based on the value of 's'
+	if s == "display" {
 		err = temp.Execute(&buf, Result)
 		if err != nil {
 			Error(w, http.StatusInternalServerError)
@@ -31,11 +29,16 @@ func ExecuteTemplate(temp *template.Template, s string, w http.ResponseWriter, i
 		w.WriteHeader(status)
 		temp.Execute(w, info)
 	} else {
-		err = temp.Execute(&buf, Cards)
+		ArtInfo := Rounder{ //[1]
+			Artist:      Result.Artist[status-1 : status],
+			ArtRelation: Result.Relation.Index[status-1].AllRelations,
+		}
+
+		err = temp.Execute(&buf, ArtInfo)
 		if err != nil {
 			Error(w, http.StatusInternalServerError)
 			return
 		}
-		temp.Execute(w, Cards)
+		temp.Execute(w, ArtInfo)
 	}
 }

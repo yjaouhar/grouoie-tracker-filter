@@ -14,12 +14,13 @@
 
 <body id="backgraound">
     <div class="bk">
-        <h1 class="hr">{{.Art.Name}}</h1>
+        {{range .Artist}}
+        <h1 class="hr">{{.Name}}</h1>
         <div class="bord">
 
             <div class="bord2">
                 <center>
-                    <img src="{{.Art.Image}}" alt="artist" class="ar">
+                    <img src="{{.Image}}" alt="artist" class="ar">
                 </center>
             </div>
 
@@ -27,7 +28,7 @@
                 <details>
                     <summary class="members">members</summary>
                     <ul>
-                        {{range .Art.Members}}
+                        {{range .Members}}
                         <li>{{.}}</li>
                         {{end}}
                     </ul>
@@ -37,7 +38,7 @@
                     <summary class="members">creationDates</summary>
                     <ul>
 
-                        <li>{{.Art.CreationDate}}</li>
+                        <li>{{.CreationDate}}</li>
 
                     </ul>
 
@@ -46,35 +47,40 @@
                 <details>
                     <summary class="members">firstAlbum</summary>
                     <ul>
-                        <li>{{.Art.FirstAlbum}}</li>
+                        <li>{{.FirstAlbum}}</li>
                     </ul>
                 </details>
-
+                {{end}}
+               
                 <details>
+                   
                     <summary class="members">locations</summary>
                     <ul>
-                        {{range .Loca.Locations}}
-                        <li>{{.}}</li>
+                        {{range $location , $_ := .ArtRelation}}
+                        <li>{{$location}}</li>
                         {{end}}
                     </ul>
-                </details>
-
+                </details>  
+              
+               
                 <details>
                     <summary class="members">concertDates</summary>
-                    <ul>
-                        {{range .Conc.Dates}}
+                    <ul>{{range $_ , $dates := .ArtRelation}}
+                        {{range $dates}}
                         <li>{{.}}</li>
+                        {{end}}
                         {{end}}
                     </ul>
                 </details>
-
+                
+                
                 <details>
                     <summary class="members">relations</summary>
                     <ul>
-                        {{range $Key, $Values := .Rela.Relation}}
-                        <li>{{$Key}}
+                        {{range $location , $dates := .ArtRelation}}
+                        <li>{{$location}}
                             <ul>
-                                {{range $Values}}
+                                {{range $dates}}
                                 <li>{{.}}</li>
                                 {{end}}
                             </ul>

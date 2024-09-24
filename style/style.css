@@ -1,5 +1,5 @@
 body {
-    background-image: url(/style/freepik-modern-dark-dj-business-card-202409231500079unE.png);
+    background-image: url(/style/freepik-modern-dark-dj-business-card-20240924101508I8gK.jpeg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -26,6 +26,8 @@ body {
     font-weight: 100;
     font-style: normal;
     padding-left:15vw ;
+    margin-bottom: 0;
+    margin-top: 0;
 
 
 }
@@ -35,12 +37,20 @@ body {
     background-color: rgb(122, 242, 242);
 }
 
+.not{
+    text-align: justify;
+      font-size: 6vw;
+   position: fixed;
+   left: 40%;  
+  }
+  
 .inp {
     border-radius: 40px;
     width: 40%;
     height: 50px;
     margin-left: 40vw;
     padding-left: 2vw;
+    box-shadow: 5px 5px 20px 5px rgb(156, 156, 156);
 
 }
 
@@ -54,11 +64,14 @@ body {
 .filter {
     width: 50%;
     height: fit-content;
+    border-radius: 5px;
     margin-top: 30px;
     margin-left: 43vw;
     padding-bottom: 15px;
     border: solid 6px rgb(198, 196, 196);
-    /* background-color: rgb(255, 47, 47); */
+    border: solid 7px rgb(198, 196, 196);
+    box-shadow: 10px 10px 40px 10px black;
+    background-color: rgb(231,236,239);
 }
 
 .value {
@@ -71,16 +84,12 @@ body {
     margin-left: 4vw;
     margin-top: 30px;
     display: inline-flex;
-    /* background-color: greenyellow; */
 }
 
 input {
     font-family: "Nosifer", sans-serif;
     color: rgb(79, 81, 81);
     cursor: pointer;
-
-
-
 }
 
 .range {
@@ -111,7 +120,6 @@ label {
 }
 
 .creatio {
-    /* background-color: red; */
     border: solid 2px black;
     padding: 10px;
 
@@ -120,22 +128,19 @@ label {
 
 .art {
     width: 90%;
-    height: 35vh;
+    height: 300px;
     border-radius: 5px;
     padding-top: 30px;
     padding-left: 4%;
     overflow: scroll;
     overflow-x: hidden;
     position: sticky;
-    background-color: rgb(213, 213, 213);
+    background-color: rgb(231,236,239);
     position: fixed;
-    top: 580px;
+    top: 56vh;
     left: 2.5%;
     border: solid 7px rgb(198, 196, 196);
     box-shadow: 10px 10px 40px 10px black;
-
-
-
 }
 
 .img {
@@ -145,18 +150,12 @@ label {
     height: 80%;
     border: solid 4px rgb(78, 224, 235);
     border-radius: 100%;
-
-
-
-
 }
 
 .sh {
     margin-bottom: 8%;
     margin-right: 7.2%;
     display: inline-flex;
-
-
 }
 
 .submet {

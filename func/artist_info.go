@@ -25,24 +25,6 @@ func ArtistInfo(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusInternalServerError)
 		return
 	}
-	// Clear existing relations in the Cards.Rela.Relation map
-	for key := range Cards.Rela.Relation {
-		delete(Cards.Rela.Relation, key)
-	}
-	Cards.Art = Result.Tbn[IDa-1]
-	if !Fetch("locations", "/"+id) {
-		Error(w, http.StatusInternalServerError)
-		return
-	}
-	if !Fetch("dates", "/"+id) {
-		Error(w, http.StatusInternalServerError)
-		return
-	}
-	if !Fetch("relation", "/"+id) {
-		Error(w, http.StatusInternalServerError)
-		return
-	}
 
-	// Execute the parsed template and write it to the response writer
-	ExecuteTemplate(temp, "", w, nil, 0)
+	ExecuteTemplate(temp, "", w, nil, IDa)
 }

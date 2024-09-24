@@ -18,100 +18,107 @@
             <h1 class="h1"> <a href="/" class="h1">Groupie-Tracker</a></h1>
         </div>
     </center>
-<div class="search">
-    <center>
-        <form action="/search">
-            <input class="inp" name="art" list="art" placeholder="Search for an artist" required>
-            <datalist id="art">
-                {{range .Tbn}}
-                <option value="{{.Name}} - artist/band">{{.Name}} </option>
-                {{range .Members}}
-                <option value="{{.}}"> {{.}} - member</option>
-                {{end}}
-                <option value="{{.FirstAlbum}}"> {{.FirstAlbum}} - first album</option>
-                <option value="{{.CreationDate}}">{{.CreationDate}} - creation date</option>
-                {{range .Loco}}
-                <option value="{{.}}">{{.}} - location</option>
-                {{end}}
-                {{end}}
-            </datalist>
-            <input class="iconserch" type="submit" value="🔍">
-        </form>
-    </center>
-</div>
-  
-        
-        <div class="filter">
-            <form action="/filter">
-               
-                <div class="option">
-                    <label class="dat" for="Max">creation date</label><br>
-                    <div class="creatio">
-                        <label for="Min">Min:</label>
-                        <input type="range" class="range" id="Min" name="Min" min="1900" max="2024" value="1900"
-                            step="1" oninput="this.nextElementSibling.value = this.value">
-                        <output>1900</output>
-                        <br>
-                        <label for="Max">Max:</label>
-                        <input type="range" class="range" id="Max" name="Max" min="1900" max="2024" value="2024"
-                            oninput="this.nextElementSibling.value = this.value">
-                        <output>2024</output>
-                    </div>
-                </div>
-                <div class="option">
-                    <label class="dat" for="First">First Album</label>
-                    <div class="creatio">
-                        <label for="Min">Min:</label>
-                        <input type="range" class="range" id="Start" name="Start" min="1900" max="2024" value="1900"
-                            step="1" oninput="this.nextElementSibling.value = this.value">
-                        <output>1900</output>
-                        <br>
-                        <label for="Max">Max:</label>
-                        <input type="range" class="range" id="End" name="End" min="1900" max="2024" value="2024"
-                            oninput="this.nextElementSibling.value = this.value">
-                        <output>2024</output>
-                    </div>
-                </div>
-                <div class="option">
-                    <label class="M" for="Members">Members:</label>
-                    <div class="value">
-                        <input type="checkbox" id="Members" name="Members" value="1">1
-                        <input type="checkbox" id="Members" name="Members" value="2">2
-                        <input type="checkbox" id="Members" name="Members" value="3">3
-                        <input type="checkbox" id="Members" name="Members" value="4">4
-                        <input type="checkbox" id="Members" name="Members" value="5">5
-                        <input type="checkbox" id="Members" name="Members" value="6">6
-                        <input type="checkbox" id="Members" name="Members" value="7">7
-                        <input type="checkbox" id="Members" name="Members" value="8">8
-                    </div>
+    <div class="search">
+        <center>
+            <form action="/search">
+                <input class="inp" name="art" list="art" placeholder="Search for an artist" required>
+                <datalist id="art">
+                    {{range .Artist}}
+                    <option value="{{.Name}}">{{.Name}} - artist/band</option>
 
-                </div>
 
-                <div class="option">
-                    <label  for="Location">Location:</label>
-                    <input type="text" id="Location" name="Location">
-                </div>
-                <center>
-                    <br><input class="sb" type="submit">
-
-                </center>
-
+                    {{end}}
+                    {{range $outerKey, $outerValue := .UniMap}}
+                    {{ range $key, $_ := $outerValue }}
+                    <option value="{{$key}}"> {{$key}} - {{$outerKey}} </option>
+                    {{end}}
+                    {{end}}
+                </datalist>
+                <input class="iconserch" type="submit" value="🔍">
             </form>
-        
+        </center>
     </div>
-    <div class="art">
-        {{range .Mok}}
+    <div class="filter">
+        <form action="/filter">
+
+            <div class="option">
+                <label class="dat" for="Max">creation date</label><br>
+                <div class="creatio">
+                    <label for="Min">Min:</label>
+                    <input type="range" class="range" id="Min" name="Min" min="1900" max="2024" value="1900" step="1"
+                        oninput="this.nextElementSibling.value = this.value">
+                    <output>1900</output>
+                    <br>
+                    <label for="Max">Max:</label>
+                    <input type="range" class="range" id="Max" name="Max" min="1900" max="2024" value="2024"
+                        oninput="this.nextElementSibling.value = this.value">
+                    <output>2024</output>
+                </div>
+            </div>
+            <div class="option">
+                <label class="dat" for="First">First Album</label>
+                <div class="creatio">
+                    <label for="Min">Min:</label>
+                    <input type="range" class="range" id="Start" name="Start" min="1900" max="2024" value="1900"
+                        step="1" oninput="this.nextElementSibling.value = this.value">
+                    <output>1900</output>
+                    <br>
+                    <label for="Max">Max:</label>
+                    <input type="range" class="range" id="End" name="End" min="1900" max="2024" value="2024"
+                        oninput="this.nextElementSibling.value = this.value">
+                    <output>2024</output>
+                </div>
+            </div>
+            <div class="option">
+                <label class="M" for="Members">Members:</label>
+                <div class="value">
+                    <input type="checkbox" id="Members" name="Members" value="1">1
+                    <input type="checkbox" id="Members" name="Members" value="2">2
+                    <input type="checkbox" id="Members" name="Members" value="3">3
+                    <input type="checkbox" id="Members" name="Members" value="4">4
+                    <input type="checkbox" id="Members" name="Members" value="5">5
+                    <input type="checkbox" id="Members" name="Members" value="6">6
+                    <input type="checkbox" id="Members" name="Members" value="7">7
+                    <input type="checkbox" id="Members" name="Members" value="8">8
+                </div>
+
+            </div>
+
+            <div class="option">
+                <label for="Location">Location:</label>
+                <input type="text" id="Location" name="Location">
+            </div>
+            <center>
+                <br><input class="sb" type="submit">
+
+            </center>
+
+        </form>
+
+    </div>
+    <div class=" art">
+        {{if .Found}}
+        <center>
+            <h1 class="not">Not Found</h1>
+        </center>
+
+        {{end}}
+        {{range .Searched}}
+
         <div class="sh">
             <center>
+
                 <img src="{{.Image}}" alt="artist" class="img">
                 <form action="/artist/{{.ID}}" method="post">
                     <input type="submit" value="{{.Name}}" class="submet">
                 </form>
             </center>
         </div>
+
         {{end}}
 
     </div>
+
 
 </body>
 

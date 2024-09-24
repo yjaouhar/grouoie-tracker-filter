@@ -26,61 +26,62 @@ func Filter(w http.ResponseWriter, r *http.Request) {
 	end, err = strconv.Atoi(r.FormValue("End"))
 	member = r.Form["Members"]
 	location = r.FormValue("Location")
-
+	location = strings.ReplaceAll(location, ", ", "-")
+	Result.Found = false
 	if err != nil || min > max || start > end {
-		Error(w, 404)
-		return
+		Result.Found = true
 	}
-	Result.Mok = nil
-	lent = len(Result.Mok)
-	for i, v := range Result.Tbn {
+	Result.Searched = nil
+	lent = len(Result.Searched)
+	for i, v := range Result.Artist {
 		if v.CreationDate >= min && v.CreationDate <= max {
-			Result.Mok = append(Result.Mok, Result.Tbn[i])
+			Result.Searched = append(Result.Searched, Result.Artist[i])
 		}
 	}
 
-	lent = len(Result.Mok)
-	for i, v := range Result.Mok {
+	lent = len(Result.Searched)
+	for i, v := range Result.Searched {
 		first, err = strconv.Atoi(v.FirstAlbum[len(v.FirstAlbum)-4:])
 		if err != nil {
-			Error(w, 404)
-			return
+			Result.Found = true
 		}
 		if first >= start && first <= end {
-			Result.Mok = append(Result.Mok, Result.Mok[i])
+			Result.Searched = append(Result.Searched, Result.Artist[i])
 		}
 	}
-	Result.Mok = Result.Mok[lent:]
+	Result.Searched = Result.Searched[lent:]
 
 	if len(member) > 0 {
-		lent = len(Result.Mok)
-		for _, v := range Result.Mok {
+		lent = len(Result.Searched)
+		for _, v := range Result.Searched {
 			for _, x := range member {
 				val, err := strconv.Atoi(x)
 				if err != nil {
-					Error(w, 404)
-					return
+					Result.Found = true
 				}
 				if len(v.Members) == val {
-					Result.Mok = append(Result.Mok, v)
+					Result.Searched = append(Result.Searched, v)
 				}
 			}
 		}
-		Result.Mok = Result.Mok[lent:]
+		Result.Searched = Result.Searched[lent:]
 	}
 
 	if len(location) > 0 {
-		lent = len(Result.Mok)
-		for _, v := range Result.Mok {
-			for _, l := range v.Loco {
-				if strings.Contains((strings.ToLower(l)), strings.ToLower(location)) {
-					Result.Mok = append(Result.Mok, v)
-					break
-				}
-			}
+		lent = len(Result.Searched)
+		// for _, v := range Result.Searched {
+		// 	for _, l := range v.Loco {
+		// 		if strings.Contains((strings.ToLower(l)), strings.ToLower(location)) {
+		// 			Result.Searched = append(Result.Searched, v)
+		// 			break
+		// 		}
+		// 	}
 
-		}
-		Result.Mok = Result.Mok[lent:]
+		// }
+		Result.Searched = Result.Searched[lent:]
+	}
+	if len(Result.Searched) == 0 {
+		Result.Found = true
 	}
 	temp, err := template.ParseFiles("template/index.html")
 	if err != nil {
@@ -88,5 +89,5 @@ func Filter(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Execute the parsed template and write it to the response writer.
-	ExecuteTemplate(temp, "alo", w, nil, 0)
+	ExecuteTemplate(temp, "display", w, nil, 0)
 }

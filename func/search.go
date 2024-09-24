@@ -7,51 +7,58 @@ import (
 	"strings"
 )
 
+// Search handles search requests for artists based on query parameters
 func Search(w http.ResponseWriter, r *http.Request) {
-	Result.Mok = nil
-	x := r.URL.Query().Get("art")
-	if x == "" {
-		Error(w, 400)
+	Result.Found = false  // Initialize the search result as not found
+	Result.Searched = nil // Clear any previous search results
+	query := r.URL.Query().Get("art")
+	if query == "" {
+		Error(w, 404)
 		return
 	}
-	for i, v := range Result.Tbn {
-		if strings.Contains(strings.ToLower(v.Name), strings.ToLower(x)) {
-			Result.Mok = append(Result.Mok, Result.Tbn[i])
+
+	// Iterate over the list of artists to find matches
+	for i, v := range Result.Artist {
+		if strings.Contains(strings.ToLower(v.Name), strings.ToLower(query)) {
+			Result.Searched = append(Result.Searched, Result.Artist[i])
 			continue
-		} else if strings.Contains(strings.ToLower(v.FirstAlbum), strings.ToLower(x)) {
-			Result.Mok = append(Result.Mok, Result.Tbn[i])
+		} else if strings.Contains(strings.ToLower(v.FirstAlbum), strings.ToLower(query)) && len(query) != 4 {
+			Result.Searched = append(Result.Searched, Result.Artist[i])
 			continue
-		} else if strings.Contains(strings.ToLower(strconv.Itoa(v.CreationDate)), strings.ToLower(x)) {
-			Result.Mok = append(Result.Mok, Result.Tbn[i])
+		} else if strings.Contains(strings.ToLower(strconv.Itoa(v.CreationDate)), strings.ToLower(query)) && len(query) == 4 {
+			Result.Searched = append(Result.Searched, Result.Artist[i])
 			continue
 		} else {
 			found := false
 			for _, mem := range v.Members {
-				if strings.Contains(strings.ToLower(mem), strings.ToLower(x)) {
-					Result.Mok = append(Result.Mok, Result.Tbn[i])
+				if strings.Contains(strings.ToLower(mem), strings.ToLower(query)) {
+					Result.Searched = append(Result.Searched, Result.Artist[i])
 					found = true
 					break
 				}
 			}
+			// If no member match is found, check relations
 			if !found {
-				for _, lo := range v.Loco {
-					if strings.Contains(strings.ToLower(lo), strings.ToLower(x)) {
-						Result.Mok = append(Result.Mok, Result.Tbn[i])
+				for v := range Result.Relation.Index[i].AllRelations {
+					if strings.Contains(strings.ToLower(v), strings.ToLower(query)) {
+						Result.Searched = append(Result.Searched, Result.Artist[i])
 						break
 					}
 				}
 			}
+
 		}
 	}
-	if len(Result.Mok) == 0 {
-		Error(w, 404)
-		return
+	// If no results were found, set the found flag to true
+	if len(Result.Searched) == 0 {
+		Result.Found = true
 	}
+
 	temp, err := template.ParseFiles("template/index.html")
 	if err != nil {
 		Error(w, http.StatusInternalServerError)
 		return
 	}
-	// Execute the parsed template and write it to the response writer.
-	ExecuteTemplate(temp, "alo", w, nil, 0)
+
+	ExecuteTemplate(temp, "display", w, nil, 0)
 }
